@@ -1,4 +1,4 @@
-FROM alpine:3
+FROM debian:stretch-slim
 
 ADD build/sftp-reporter /sftp-reporter
 

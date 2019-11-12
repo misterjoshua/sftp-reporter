@@ -3,7 +3,7 @@ TAG ?= latest
 
 all: build container
 
-build:
+build: main.go
 	go build -o build/sftp-reporter main.go
 
 container:
