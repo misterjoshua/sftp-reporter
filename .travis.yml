@@ -1,0 +1,10 @@
+language: go
+go:
+- '1.0'
+- '1.3'
+script:
+- set -e
+- IMAGE=${DOCKER_REPO:-wheatstalk/sftp-reporter} make all
+- source <(curl -s https://raw.githubusercontent.com/misterjoshua/docker-push-semver-bash/master/docker_push_semver.sh)
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+- dockerPushSemver $DOCKER_REPO `git describe --tags || echo 0.0.0`
