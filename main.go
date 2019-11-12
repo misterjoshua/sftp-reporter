@@ -69,7 +69,7 @@ func appendServicesMatchingLabel(clientset *kubernetes.Clientset, labelSelector 
 var globalClient *kubernetes.Clientset
 
 func main() {
-	kubeconfig := flag.String("kubeconfig", "/home/josh/.kube/config", "kubeconfig file")
+	kubeconfig := flag.String("kubeconfig", "~/.kube/config", "kubeconfig file")
 	address := flag.String("address", ":8090", "http listen address")
 	flag.Parse()
 
@@ -113,5 +113,9 @@ func handleSftpRequest(w http.ResponseWriter, req *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(svcs)
+	err = json.NewEncoder(w).Encode(svcs)
+	if err != nil {
+		log.Errorf("Encoding json: %v", err)
+		w.WriteHeader(500)
+	}
 }
